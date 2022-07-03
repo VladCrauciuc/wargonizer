@@ -6,7 +6,7 @@
         class="form-select border-0"
         id="faction-select"
         v-model="factionSelect"
-        @change="setCurrentArmy"
+        @change="handleFactionSelect"
       >
         <option value="" hidden>Select a faction</option>
         <option v-for="army in armies" :key="army.name">
@@ -20,24 +20,19 @@
 
 <script>
 import { ref } from "@vue/reactivity";
-// import { ref } from "@vue/reactivity";
-
 import { armies } from "../../db/_armies";
-export default {
-  setup(props, { emit }) {
-    let factionSelect = ref("");
-    let currentArmy = ref(null);
 
-    const setCurrentArmy = () => {
-      armies.forEach((army) => {
-        if (army.name === factionSelect.value) {
-          currentArmy.value = army;
-        }
-      });
-      emit("toggleShowSquad", currentArmy.value);
+export default {
+  emits: ["setArmy"],
+
+  setup(props, { emit }) {
+    const factionSelect = ref("");
+
+    const handleFactionSelect = () => {
+      emit("setArmy", factionSelect.value);
     };
 
-    return { armies, factionSelect, setCurrentArmy };
+    return { armies, factionSelect, handleFactionSelect };
   },
 };
 </script>
