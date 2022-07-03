@@ -6,8 +6,8 @@
       class="form-control border-0"
       id="model-number-input"
       placeholder="Model Number"
-      :min="minModelNumber"
-      :max="maxModelNumber"
+      :min="currentSquad.min"
+      :max="currentSquad.max"
     />
     <label for="model-number-input">
       <span class="fw-bold">Total</span> no. of models
@@ -16,21 +16,10 @@
 </template>
 
 <script>
-import { ref, toRef, toRefs } from "@vue/reactivity";
+// import { ref, toRef, toRefs } from "@vue/reactivity";
 export default {
-  props: ["currentSquad"],
-  setup(props) {
-    const minModelNumber = ref("");
-    const maxModelNumber = ref("");
-
-    (minModelNumber.value = props), "currentSquad.value.min";
-    (maxModelNumber.value = props), "currentSquad.value.max";
-
-    return {
-      minModelNumber,
-      maxModelNumber,
-    };
-  },
+  props: { currentSquad: Object },
+  setup(props) {},
 };
 </script>
 

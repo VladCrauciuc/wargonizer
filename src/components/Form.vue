@@ -39,8 +39,8 @@ export default {
         }
       });
       console.log(currentArmy.value.name);
-      showSquadSelect.value = true;
       currentSquad.value = null;
+      showSquadSelect.value = true;
     };
 
     const setCurrentSquad = (squadSelect) => {

@@ -21,7 +21,7 @@
 import { ref } from "@vue/reactivity";
 
 export default {
-  props: ["currentArmy"],
+  props: { currentArmy: Object },
 
   emits: ["setSquad"],
 
