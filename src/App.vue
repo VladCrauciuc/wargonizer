@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <h1 class="mt-3">WARgonizer</h1>
+    <div class="d-flex justify-content-center mb-3">
+      <h1 class="mt-3">WARgonizer</h1>
+    </div>
     <Form />
   </div>
 </template>
