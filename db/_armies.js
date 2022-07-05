@@ -7,6 +7,7 @@ export const armies = [
         name: "Battle Sisters Squad",
         min: 5,
         max: 20,
+        optionalSquadEquipment: [],
         hasLeader: true,
         leader: {
           name: "Sister Superior",
@@ -36,6 +37,7 @@ export const armies = [
         name: "Custodian Guard",
         min: 3,
         max: 10,
+        optionalSquadEquipment: [],
         hasLeader: false,
         leader: {},
       },
@@ -49,6 +51,7 @@ export const armies = [
         name: "Skitarii Rangers",
         min: 5,
         max: 20,
+        optionalSquadEquipment: [],
         hasLeader: true,
         leader: {
           name: "Skitarii Ranger Alpha",
@@ -68,6 +71,7 @@ export const armies = [
         name: "Guardian Defenders",
         min: 10,
         max: 20,
+        optionalSquadEquipment: [],
         optionalSquadEquipment: [
           "Heavy Weapon Platform x1",
           "Heavy Weapon Platform x2",
@@ -170,18 +174,19 @@ export const armies = [
             "Chainsword",
             "Lightning Claw",
             "Plasma Pistol",
-            "Power Axe",
-            "Power Fist",
-            "Power Maul",
-            "Power Sword",
-          ],
-          leaderWeapon2: [
+
             "Boltgun",
             "Combi-bolter",
             "Combi-flamer",
             "Combi-melta",
             "Combi-melta",
             "Combi-plasma",
+          ],
+          leaderWeapon2: [
+            "Power Axe",
+            "Power Fist",
+            "Power Maul",
+            "Power Sword",
           ],
           restrictOptionalEquipment: true,
           optionalLeaderEquipment: [],

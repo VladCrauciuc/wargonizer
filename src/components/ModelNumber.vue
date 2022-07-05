@@ -1,6 +1,6 @@
 <template>
   <!-- number -->
-  <div class="form-group">
+  <div class="form-group mb-3">
     <div class="form-floating">
       <input
         @keydown.enter.prevent="

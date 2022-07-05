@@ -6,7 +6,7 @@
         class="form-select border-0"
         id="squad-select"
         v-model="squadSelect"
-        @change="handleSquadSelect"
+        @change="$emit('setSquad', squadSelect)"
       >
         <option value="" hidden>Select a squad</option>
         <option v-for="squad in currentArmy.squads" :key="squad.name">
@@ -23,12 +23,13 @@ import { ref } from "@vue/reactivity";
 import { watch } from "@vue/runtime-core";
 
 export default {
-  props: { currentArmy: Object, reset: Boolean },
+  props: { currentArmy: Object },
 
   emits: ["setSquad"],
 
   setup(props, { emit }) {
     const squadSelect = ref("");
+    const errorMessage = "Please select a squad";
 
     // reset to empty value when army change
     watch(
@@ -39,11 +40,16 @@ export default {
     );
 
     // emit value of squadSelect to Form
-    const handleSquadSelect = () => {
-      emit("setSquad", squadSelect.value);
-    };
+    // const handleSquadSelect = () => {
+    //   if (squadSelect.value == "") {
+    //     emit("setError", errorMessage);
+    //     console.log("emit error");
+    //   } else {
+    //     emit("setSquad", squadSelect.value);
+    //   }
+    // };
 
-    return { squadSelect, handleSquadSelect };
+    return { squadSelect };
   },
 };
 </script>

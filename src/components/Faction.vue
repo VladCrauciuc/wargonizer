@@ -26,7 +26,7 @@ import { armies } from "../../db/_armies";
 export default {
   props: { reset: Boolean },
 
-  emits: ["setArmy", "resetOldVal"],
+  emits: ["setArmy"],
 
   setup(props, { emit }) {
     const factionSelect = ref("");
