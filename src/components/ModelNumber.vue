@@ -17,6 +17,9 @@
       />
       <label for="model-number-input">
         <span class="fw-bold">Total</span> no. of models
+        <span v-show="currentSquad.min && currentSquad.max"
+          >(between {{ currentSquad.min }} and {{ currentSquad.max }})</span
+        >
       </label>
     </div>
   </div>

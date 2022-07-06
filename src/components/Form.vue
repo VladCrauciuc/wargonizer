@@ -29,6 +29,12 @@
       v-if="showSpecialWeapon"
       @setSpecialWeapon="setCurrentSpecialWeapon"
     />
+    <!-- heavy weapon comes from here -->
+    <HeavyWeapon
+      :currentSquad="currentSquad"
+      v-if="showHeavyWeapon"
+      @setHeavyWeapon="setCurrentHeavyWeapon"
+    />
 
     <!-- temp container for saved armies -->
     <div class="d-flex justify-content-center">
@@ -51,7 +57,9 @@
       </p>
       <p
         class="fst-italic"
-        :class="{ 'mb-0': army.optSquadEquip || army.specialWeapon }"
+        :class="{
+          'mb-0': army.optSquadEquip || army.specialWeapon || army.heavyWeapon,
+        }"
       >
         <span class="fw-bold">Number of models:</span>
         {{ army.number }} models
@@ -64,9 +72,17 @@
         <span class="fw-bold">Optional Squad Equipment:</span>
         {{ army.optSquadEquip }}
       </p>
-      <p v-if="army.specialWeapon" class="fst-italic">
-        <span class="fw-bold">Optional Squad Equipment:</span>
+      <p
+        v-if="army.specialWeapon"
+        class="fst-italic"
+        :class="{ 'mb-0': army.heavyWeapon }"
+      >
+        <span class="fw-bold">Special Weapon:</span>
         {{ army.specialWeapon }}
+      </p>
+      <p v-if="army.heavyWeapon" class="fst-italic">
+        <span class="fw-bold">Heavy Weapon:</span>
+        {{ army.heavyWeapon }}
       </p>
     </div>
   </div>
@@ -81,6 +97,7 @@ import Squad from "./Squad.vue";
 import ModelNumber from "./ModelNumber.vue";
 import OptionalSquadEquipment from "./OptionalSquadEquipment.vue";
 import SpecialWeapon from "./SpecialWeapon.vue";
+import HeavyWeapon from "./HeavyWeapon.vue";
 
 export default {
   components: {
@@ -89,6 +106,7 @@ export default {
     ModelNumber,
     OptionalSquadEquipment,
     SpecialWeapon,
+    HeavyWeapon,
   },
   setup() {
     let reset = ref(false);
@@ -98,18 +116,21 @@ export default {
     let showModelNumberInput = ref(false);
     let showOptionalSquadEquipment = ref(false);
     let showSpecialWeapon = ref(false);
+    let showHeavyWeapon = ref(false);
 
     let currentArmy = ref(null);
     let currentSquad = ref(null);
     let currentModelNumber = ref("");
     let currentOptionalSquadEquipment = ref("");
     let currentSpecialWeapon = ref("");
+    let currentHeavyWeapon = ref("");
 
     let selectedArmy = ref("");
     let selectedSquad = ref("");
     let selectedModelNumber = ref("");
     let selectedOptionalSquadEquipment = ref("");
     let selectedSpecialWeapon = ref("");
+    let selectedHeavyWeapon = ref("");
 
     let totalSelectedArmy = ref({
       name: "",
@@ -117,12 +138,13 @@ export default {
       number: "",
       optSquadEquip: "",
       specialWeapon: "",
+      heavyWeapon: "",
     });
     let armyArr = ref([]);
 
     const setCurrentArmy = (factionSelect) => {
       if (factionSelect !== "") {
-        showSquadSelect.value = false;
+        // showSquadSelect.value = false;
         armies.forEach((army) => {
           if (factionSelect === army.name) {
             currentArmy.value = army;
@@ -131,6 +153,8 @@ export default {
         showSquadSelect.value = true;
         showOptionalSquadEquipment.value = false;
         showSpecialWeapon.value = false;
+        showHeavyWeapon.value = false;
+        currentSquad.value = {};
       } else {
         currentArmy.value = {};
       }
@@ -148,6 +172,8 @@ export default {
         !currentSquad.value.optionalSquadEquipment.length == 0 ? true : false;
       showSpecialWeapon.value =
         !currentSquad.value.specialWeapons.length == 0 ? true : false;
+      showHeavyWeapon.value =
+        !currentSquad.value.heavyWeapons.length == 0 ? true : false;
     };
 
     const setCurrentModelNumber = (modelNumberInput) => {
@@ -178,20 +204,30 @@ export default {
       }
     };
 
-    const displayValues = () => {
-      if (!currentSquad.value) {
-        error.value = "Please select a squad";
-        setTimeout(() => {
-          error.value = "";
-        }, 1500);
-      } else if (!currentModelNumber.value) {
-        error.value = "Please input a number of models in squad";
-        setTimeout(() => {
-          error.value = "";
-        }, 1500);
+    const setCurrentHeavyWeapon = (heavyWeaponSelect) => {
+      if (heavyWeaponSelect !== "") {
+        currentSquad.value.heavyWeapons.forEach((heavy) => {
+          if (heavyWeaponSelect === heavy) {
+            currentHeavyWeapon.value = heavy;
+          }
+        });
+      } else {
+        currentHeavyWeapon.value = "";
       }
+    };
 
+    const displayValues = () => {
       if (
+        !currentArmy.value === {} ||
+        !currentSquad.value ||
+        !currentModelNumber.value
+      ) {
+        error.value = "Please select a faction, squad, and number of models";
+        setTimeout(() => {
+          error.value = "";
+        }, 2000);
+        return;
+      } else if (
         currentArmy.value &&
         currentSquad.value &&
         currentModelNumber.value !== ""
@@ -199,51 +235,35 @@ export default {
         reset.value = !reset.value;
         error.value = "";
 
-        selectedArmy.value = currentArmy.value.name;
-        selectedSquad.value = currentSquad.value.name;
-        selectedModelNumber.value = currentModelNumber.value;
-        selectedOptionalSquadEquipment.value =
+        totalSelectedArmy.value.name = currentArmy.value.name;
+        totalSelectedArmy.value.squadName = currentSquad.value.name;
+        totalSelectedArmy.value.number = currentModelNumber.value;
+        totalSelectedArmy.value.optSquadEquip =
           currentOptionalSquadEquipment.value;
-        selectedSpecialWeapon.value = currentSpecialWeapon.value;
-
-        // console.log(selectedArmy.value);
-        // console.log(selectedSquad.value);
-        // console.log(selectedModelNumber.value);
-        // console.log(selectedOptionalSquadEquipment.value);
-        // console.log(selectedSpecialWeapon.value);
-        // reset form
-        currentArmy.value = null;
-        currentSquad.value = null;
-        currentModelNumber.value = "";
-        currentOptionalSquadEquipment.value = "";
-        currentSpecialWeapon.value = "";
+        totalSelectedArmy.value.specialWeapon = currentSpecialWeapon.value;
+        totalSelectedArmy.value.heavyWeapon = currentHeavyWeapon.value;
+        armyArr.value.push(totalSelectedArmy.value);
+        totalSelectedArmy.value = {
+          name: "",
+          squadName: "",
+          number: "",
+          optSquadEquip: "",
+          specialWeapon: "",
+          heavyWeapon: "",
+        };
         showSquadSelect.value = false;
         showModelNumberInput.value = false;
         showOptionalSquadEquipment.value = false;
         showSpecialWeapon.value = false;
-      } else {
-        return;
+        showHeavyWeapon.value = false;
       }
-      totalSelectedArmy.value.name = selectedArmy.value;
-      totalSelectedArmy.value.squadName = selectedSquad.value;
-      totalSelectedArmy.value.number = selectedModelNumber.value;
-      totalSelectedArmy.value.optSquadEquip =
-        selectedOptionalSquadEquipment.value;
-      totalSelectedArmy.value.specialWeapon = selectedSpecialWeapon.value;
-      armyArr.value.push(totalSelectedArmy.value);
-      totalSelectedArmy.value = {
-        name: "",
-        squadName: "",
-        number: "",
-        optSquadEquip: "",
-        specialWeapon: "",
-      };
-      // reset selected values
-      selectedArmy.value = "";
-      selectedSquad.value = "";
-      selectedModelNumber.value = "";
-      selectedOptionalSquadEquipment.value = "";
-      selectedSpecialWeapon.value = "";
+      // reset current values
+      currentArmy.value = {};
+      currentSquad.value = {};
+      currentModelNumber.value = "";
+      currentOptionalSquadEquipment.value = "";
+      currentSpecialWeapon.value = "";
+      currentHeavyWeapon.value = "";
     };
 
     return {
@@ -263,11 +283,15 @@ export default {
       showSpecialWeapon,
       setCurrentSpecialWeapon,
       currentSpecialWeapon,
+      showHeavyWeapon,
+      setCurrentHeavyWeapon,
+      currentHeavyWeapon,
       selectedArmy,
       selectedSquad,
       selectedModelNumber,
       selectedOptionalSquadEquipment,
       selectedSpecialWeapon,
+      selectedHeavyWeapon,
       armyArr,
       totalSelectedArmy,
       displayValues,

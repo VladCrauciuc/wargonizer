@@ -1,7 +1,10 @@
 <template>
   <div class="container">
-    <div class="d-flex justify-content-center mb-3">
-      <h1 class="mt-3">WARgonizer</h1>
+    <div
+      class="d-flex flex-column justify-content-center align-items-center mt-3 mb-3"
+    >
+      <h1>WARgonizer</h1>
+      <h4 class="fst-italic">v2.0</h4>
     </div>
     <Form />
   </div>

@@ -97,8 +97,22 @@ export const armies = [
         min: 5,
         max: 10,
         optionalSquadEquipment: ["Voxcaster"],
-        specialWeapons: [],
-        heavyWeapons: [],
+        specialWeapons: [
+          "Sniper Rifle (1 model)",
+          "Flamer (1 model)",
+          "Grenade Launcher (1 model)",
+          "Meltagun (1 model)",
+          "Plasma Gun (1 model)",
+          "Breacher Charge (1 model)",
+          "Lascutter (1 model)",
+        ],
+        heavyWeapons: [
+          "Mortar (2 models)",
+          "Autocannon (2 models)",
+          "Heavy Bolter (2 models)",
+          "Missile Launcher (2 models)",
+          "Lascannon (2 models)",
+        ],
         hasLeader: true,
         leader: {
           name: "Sergeant",
@@ -181,8 +195,14 @@ export const armies = [
           "Icon of Excess",
           "Icon of Leadership",
         ],
-        specialWeapons: [],
-        heavyWeapons: [],
+        specialWeapons: ["Flamer", "Meltagun", "Plasma Gun"],
+        heavyWeapons: [
+          "Autocannon",
+          "Heavy Bolter",
+          "Lascannon",
+          "Missile Launcher",
+          "Reaper Chaincannon",
+        ],
         leader: {
           name: "Aspiring Champion",
           leaderWeapon1: [
@@ -191,7 +211,6 @@ export const armies = [
             "Chainsword",
             "Lightning Claw",
             "Plasma Pistol",
-
             "Boltgun",
             "Combi-bolter",
             "Combi-flamer",
@@ -207,6 +226,27 @@ export const armies = [
           ],
           restrictOptionalEquipment: true,
           optionalLeaderEquipment: [],
+        },
+      },
+      {
+        name: "Chaos Cultists",
+        min: 10,
+        max: 30,
+        optionalSquadEquipment: [
+          "Heavy Stubber (1 every 10 models)",
+          "Flamer (1 every 10 models)",
+        ],
+        specialWeapons: [],
+        heavyWeapons: [],
+        leader: {
+          name: "Aspiring Champion",
+          leaderWeapon1: ["Autogun"],
+          leaderWeapon2: [],
+          restrictOptionalEquipment: true,
+          optionalLeaderEquipment: [
+            "Shotgun",
+            "Autopist and Brutal Assault Weapon",
+          ],
         },
       },
     ],
