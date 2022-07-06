@@ -41,8 +41,8 @@ export default {
       () => props.reset,
       (newVal, oldVal) => {
         factionSelect.value = "";
-        console.log("emit faction");
-        console.log(newVal, oldVal);
+        // console.log("emit faction");
+        // console.log(newVal, oldVal);
         // handleFactionSelect();
       }
     );

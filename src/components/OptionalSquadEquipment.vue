@@ -6,10 +6,13 @@
         class="form-check-input"
         type="checkbox"
         role="switch"
-        id="has-special-weapon-switch"
+        id="has-optional-equipment-switch"
         v-model="hasOptionalSquadEquipment"
+        @change="$emit('setOptionalSquadEquipment', '')"
       />
-      <label class="form-check-label text-light" for="has-special-weapon-switch"
+      <label
+        class="form-check-label text-light"
+        for="has-optional-equipment-switch"
         >Optional Squad Equipment</label
       >
     </div>
@@ -19,7 +22,9 @@
         class="form-select border-0"
         id="optional-squad-equipment-select"
         v-model="optionalSquadEquipmentSelect"
-        @change="handleOptionalSquadEquipmentSelect"
+        @change="
+          $emit('setOptionalSquadEquipment', optionalSquadEquipmentSelect)
+        "
       >
         <option value="" hidden>Select Optional Equipment</option>
         <option
@@ -43,6 +48,8 @@ import { watch } from "@vue/runtime-core";
 export default {
   props: { currentSquad: Object },
 
+  emits: ["setOptionalSquadEquipment"],
+
   setup(props, { emit }) {
     const hasOptionalSquadEquipment = ref(false);
 
@@ -58,14 +65,9 @@ export default {
       }
     );
 
-    const handleOptionalSquadEquipmentSelect = () => {
-      emit("setOptionalSquadEquipment", optionalSquadEquipmentSelect.value);
-    };
-
     return {
       hasOptionalSquadEquipment,
       optionalSquadEquipmentSelect,
-      handleOptionalSquadEquipmentSelect,
     };
   },
 };
