@@ -8,7 +8,10 @@
         role="switch"
         id="has-optional-equipment-switch"
         v-model="hasOptionalSquadEquipment"
-        @change="$emit('setOptionalSquadEquipment', '')"
+        @change="
+          $emit('setOptionalSquadEquipment', '');
+          optionalSquadEquipmentSelect = '';
+        "
       />
       <label
         class="form-check-label text-light"

@@ -1,14 +1,14 @@
 <template>
   <form @submit.prevent>
     <!-- faction comes from here -->
-    <Faction @setArmy="setCurrentArmy" :reset="!reset" />
+    <Faction @setArmy="setCurrentArmy" :reset="reset" />
     <!-- squad comes from here -->
     <Squad
       v-if="showSquadSelect"
       :currentArmy="currentArmy"
       @setSquad="setCurrentSquad"
     />
-    <!-- total number comes from here -->
+    <!-- total model number comes from here -->
     <ModelNumber
       v-if="showModelNumberInput"
       :currentSquad="currentSquad"
@@ -35,14 +35,20 @@
       v-if="showHeavyWeapon"
       @setHeavyWeapon="setCurrentHeavyWeapon"
     />
+    <!-- leader comes from here -->
+    <Leader
+      v-if="showLeader"
+      :currentSquad="currentSquad"
+      @setLeader="setCurrentLeader"
+    />
 
-    <!-- temp container for saved armies -->
     <div class="d-flex justify-content-center">
       <button @click="displayValues()" class="w-25 btn btn-primary">
         Display
       </button>
     </div>
   </form>
+  <!-- temp container for saved armies -->
   <div class="row mx-0">
     <div
       class="col-12 mt-3 pt-3 bg-secondary text-light rounded"
@@ -52,13 +58,19 @@
       <p class="fst-italic h4">
         <span class="fw-bold">Army:</span> {{ army.name }}
       </p>
-      <p class="fst-italic mb-0">
+      <p class="fst-italic mb-0 py-2">
         <span class="fw-bold">Squad:</span> {{ army.squadName }}
       </p>
       <p
-        class="fst-italic"
+        class="fst-italic py-2"
         :class="{
-          'mb-0': army.optSquadEquip || army.specialWeapon || army.heavyWeapon,
+          'mb-0':
+            army.optSquadEquip ||
+            army.specialWeapon ||
+            army.heavyWeapon ||
+            army.leaderWeapon1 ||
+            army.leaderWeapon2 ||
+            army.leaderOptional,
         }"
       >
         <span class="fw-bold">Number of models:</span>
@@ -66,7 +78,7 @@
       </p>
       <p
         v-if="army.optSquadEquip"
-        class="fst-italic"
+        class="fst-italic py-2"
         :class="{ 'mb-0': army.specialWeapon }"
       >
         <span class="fw-bold">Optional Squad Equipment:</span>
@@ -74,15 +86,31 @@
       </p>
       <p
         v-if="army.specialWeapon"
-        class="fst-italic"
+        class="fst-italic py-2"
         :class="{ 'mb-0': army.heavyWeapon }"
       >
         <span class="fw-bold">Special Weapon:</span>
         {{ army.specialWeapon }}
       </p>
-      <p v-if="army.heavyWeapon" class="fst-italic">
+      <p
+        v-if="army.heavyWeapon"
+        class="fst-italic py-2"
+        :class="{
+          'mb-0':
+            army.leaderWeapon1 || army.leaderWeapon2 || army.leaderOptional,
+        }"
+      >
         <span class="fw-bold">Heavy Weapon:</span>
         {{ army.heavyWeapon }}
+      </p>
+      <p
+        v-if="army.leaderWeapon1 || army.leaderWeapon2 || army.leaderOptional"
+        class="fst-italic py-2"
+      >
+        <span class="fw-bold">Leader:</span>
+        {{ army.leaderName }} - {{ army.leaderWeapon1 }} -
+        {{ army.leaderWeapon2 }} -
+        {{ army.leaderOptional }}
       </p>
     </div>
   </div>
@@ -98,6 +126,7 @@ import ModelNumber from "./ModelNumber.vue";
 import OptionalSquadEquipment from "./OptionalSquadEquipment.vue";
 import SpecialWeapon from "./SpecialWeapon.vue";
 import HeavyWeapon from "./HeavyWeapon.vue";
+import Leader from "./Leader.vue";
 
 export default {
   components: {
@@ -107,6 +136,7 @@ export default {
     OptionalSquadEquipment,
     SpecialWeapon,
     HeavyWeapon,
+    Leader,
   },
   setup() {
     let reset = ref(false);
@@ -117,6 +147,7 @@ export default {
     let showOptionalSquadEquipment = ref(false);
     let showSpecialWeapon = ref(false);
     let showHeavyWeapon = ref(false);
+    let showLeader = ref(false);
 
     let currentArmy = ref(null);
     let currentSquad = ref(null);
@@ -124,13 +155,9 @@ export default {
     let currentOptionalSquadEquipment = ref("");
     let currentSpecialWeapon = ref("");
     let currentHeavyWeapon = ref("");
-
-    let selectedArmy = ref("");
-    let selectedSquad = ref("");
-    let selectedModelNumber = ref("");
-    let selectedOptionalSquadEquipment = ref("");
-    let selectedSpecialWeapon = ref("");
-    let selectedHeavyWeapon = ref("");
+    let currentLeaderWeapon1 = ref("");
+    let currentLeaderWeapon2 = ref("");
+    let currentLeaderOptional = ref("");
 
     let totalSelectedArmy = ref({
       name: "",
@@ -139,6 +166,10 @@ export default {
       optSquadEquip: "",
       specialWeapon: "",
       heavyWeapon: "",
+      leaderName: "",
+      leaderWeapon1: "",
+      leaderWeapon2: "",
+      leaderOptional: "",
     });
     let armyArr = ref([]);
 
@@ -151,9 +182,11 @@ export default {
           }
         });
         showSquadSelect.value = true;
+        showModelNumberInput.value = false;
         showOptionalSquadEquipment.value = false;
         showSpecialWeapon.value = false;
         showHeavyWeapon.value = false;
+        showLeader.value = false;
         currentSquad.value = {};
       } else {
         currentArmy.value = {};
@@ -174,6 +207,7 @@ export default {
         !currentSquad.value.specialWeapons.length == 0 ? true : false;
       showHeavyWeapon.value =
         !currentSquad.value.heavyWeapons.length == 0 ? true : false;
+      showLeader.value = currentSquad.value.hasLeader ? true : false;
     };
 
     const setCurrentModelNumber = (modelNumberInput) => {
@@ -216,6 +250,36 @@ export default {
       }
     };
 
+    const setCurrentLeader = (leader) => {
+      if (leader.leaderWeapon1Select !== "") {
+        currentSquad.value.leader.leaderWeapon1.forEach((weapon) => {
+          if (leader.leaderWeapon1Select === weapon) {
+            currentLeaderWeapon1.value = weapon;
+          }
+        });
+      } else {
+        currentLeaderWeapon1.value = "";
+      }
+      if (leader.leaderWeapon2Select !== "") {
+        currentSquad.value.leader.leaderWeapon2.forEach((weapon) => {
+          if (leader.leaderWeapon2Select === weapon) {
+            currentLeaderWeapon2.value = weapon;
+          }
+        });
+      } else {
+        currentLeaderWeapon2.value = "";
+      }
+      if (leader.leaderOptionalSelect !== "") {
+        currentSquad.value.leader.leaderOptionalEquipment.forEach((weapon) => {
+          if (leader.leaderOptionalSelect === weapon) {
+            currentLeaderOptional.value = weapon;
+          }
+        });
+      } else {
+        currentLeaderOptional.value = "";
+      }
+    };
+
     const displayValues = () => {
       if (
         !currentArmy.value === {} ||
@@ -230,10 +294,20 @@ export default {
       } else if (
         currentArmy.value &&
         currentSquad.value &&
-        currentModelNumber.value !== ""
+        currentModelNumber.value
       ) {
         reset.value = !reset.value;
         error.value = "";
+
+        console.log(currentArmy.value.name);
+        console.log(currentSquad.value.name);
+        console.log(currentModelNumber.value);
+        console.log(currentOptionalSquadEquipment.value);
+        console.log(currentSpecialWeapon.value);
+        console.log(currentHeavyWeapon.value);
+        console.log(currentLeaderWeapon1.value);
+        console.log(currentLeaderWeapon2.value);
+        console.log(currentLeaderOptional.value);
 
         totalSelectedArmy.value.name = currentArmy.value.name;
         totalSelectedArmy.value.squadName = currentSquad.value.name;
@@ -242,6 +316,10 @@ export default {
           currentOptionalSquadEquipment.value;
         totalSelectedArmy.value.specialWeapon = currentSpecialWeapon.value;
         totalSelectedArmy.value.heavyWeapon = currentHeavyWeapon.value;
+        totalSelectedArmy.value.leaderName = currentSquad.value.leader.name;
+        totalSelectedArmy.value.leaderWeapon1 = currentLeaderWeapon1.value;
+        totalSelectedArmy.value.leaderWeapon2 = currentLeaderWeapon2.value;
+        totalSelectedArmy.value.leaderOptional = currentLeaderOptional.value;
         armyArr.value.push(totalSelectedArmy.value);
         totalSelectedArmy.value = {
           name: "",
@@ -250,12 +328,17 @@ export default {
           optSquadEquip: "",
           specialWeapon: "",
           heavyWeapon: "",
+          leaderName: "",
+          leaderWeapon1: "",
+          leaderWeapon2: "",
+          leaderOptional: "",
         };
         showSquadSelect.value = false;
         showModelNumberInput.value = false;
         showOptionalSquadEquipment.value = false;
         showSpecialWeapon.value = false;
         showHeavyWeapon.value = false;
+        showLeader.value = false;
       }
       // reset current values
       currentArmy.value = {};
@@ -264,6 +347,9 @@ export default {
       currentOptionalSquadEquipment.value = "";
       currentSpecialWeapon.value = "";
       currentHeavyWeapon.value = "";
+      currentLeaderWeapon1.value = "";
+      currentLeaderWeapon1.value = "";
+      currentLeaderOptional.value = "";
     };
 
     return {
@@ -286,14 +372,13 @@ export default {
       showHeavyWeapon,
       setCurrentHeavyWeapon,
       currentHeavyWeapon,
-      selectedArmy,
-      selectedSquad,
-      selectedModelNumber,
-      selectedOptionalSquadEquipment,
-      selectedSpecialWeapon,
-      selectedHeavyWeapon,
-      armyArr,
+      showLeader,
+      setCurrentLeader,
+      currentLeaderWeapon1,
+      currentLeaderWeapon2,
+      currentLeaderOptional,
       totalSelectedArmy,
+      armyArr,
       displayValues,
     };
   },

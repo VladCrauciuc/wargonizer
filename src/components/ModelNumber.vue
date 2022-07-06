@@ -58,7 +58,6 @@ export default {
       if (modelNumberInput.value > props.currentSquad.max) {
         modelNumberInput.value = props.currentSquad.max;
       }
-      // console.log($event);
       $event.target.blur();
     };
 

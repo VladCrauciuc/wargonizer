@@ -8,7 +8,10 @@
         role="switch"
         id="has-special-weapon-switch"
         v-model="hasSpecialWeapon"
-        @change="$emit('setSpecialWeapon', '')"
+        @change="
+          $emit('setSpecialWeapon', '');
+          specialWeaponSelect = '';
+        "
       />
       <label class="form-check-label text-light" for="has-special-weapon-switch"
         >Special Weapon</label

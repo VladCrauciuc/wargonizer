@@ -29,7 +29,6 @@ export default {
 
   setup(props, { emit }) {
     const squadSelect = ref("");
-    const errorMessage = "Please select a squad";
 
     // reset to empty value when army change
     watch(
@@ -38,16 +37,6 @@ export default {
         squadSelect.value = "";
       }
     );
-
-    // emit value of squadSelect to Form
-    // const handleSquadSelect = () => {
-    //   if (squadSelect.value == "") {
-    //     emit("setError", errorMessage);
-    //     console.log("emit error");
-    //   } else {
-    //     emit("setSquad", squadSelect.value);
-    //   }
-    // };
 
     return { squadSelect };
   },

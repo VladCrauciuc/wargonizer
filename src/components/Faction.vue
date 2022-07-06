@@ -6,7 +6,7 @@
         class="form-select border-0"
         id="faction-select"
         v-model="factionSelect"
-        @change="handleFactionSelect"
+        @change="$emit('setArmy', factionSelect)"
       >
         <option value="" hidden>Select a faction</option>
         <option v-for="army in armies" :key="army.name">
@@ -31,23 +31,15 @@ export default {
   setup(props, { emit }) {
     const factionSelect = ref("");
 
-    // emit value of factionSelect to Form
-    const handleFactionSelect = () => {
-      emit("setArmy", factionSelect.value);
-    };
-
     // reset to empty value when displayValues called
     watch(
       () => props.reset,
       (newVal, oldVal) => {
         factionSelect.value = "";
-        // console.log("emit faction");
-        // console.log(newVal, oldVal);
-        // handleFactionSelect();
       }
     );
 
-    return { armies, factionSelect, handleFactionSelect };
+    return { armies, factionSelect };
   },
 };
 </script>

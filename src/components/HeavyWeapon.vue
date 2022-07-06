@@ -1,6 +1,6 @@
 <template>
   <div class="form-group mb-3">
-    <!-- specialWeapon Switch -->
+    <!-- hasHeavyWeapon Switch -->
     <div class="form-check form-switch mb-3">
       <input
         class="form-check-input"
@@ -8,13 +8,16 @@
         role="switch"
         id="has-heavy-weapon-switch"
         v-model="hasHeavyWeapon"
-        @change="$emit('setHeavyWeapon', '')"
+        @change="
+          $emit('setHeavyWeapon', '');
+          heavyWeaponSelect = '';
+        "
       />
       <label class="form-check-label text-light" for="has-heavy-weapon-switch"
         >Heavy Weapon</label
       >
     </div>
-    <!-- Special Weapon -->
+    <!-- heavyWeapon -->
     <div v-if="hasHeavyWeapon" class="form-floating">
       <select
         class="form-select border-0"
