@@ -41,6 +41,26 @@ export const armies = [
           leaderOptionalEquipment: [],
         },
       },
+      {
+        name: "Sisters Novitiate",
+        min: 10,
+        max: 10,
+        optionalSquadEquipment: [
+          "Simulacrum Imperialis",
+          "Sacred Banner",
+          "Simulacrum Imperialis and Sacred Banner",
+        ],
+        specialWeapons: [],
+        heavyWeapons: [],
+        hasLeader: true,
+        leader: {
+          name: "Novitiate Superior",
+          leaderWeapon1: ["Bolt Pistol", "Plasma Pistol"],
+          leaderWeapon2: ["Power Sword"],
+          restrictOptionalEquipment: true,
+          leaderOptionalEquipment: [],
+        },
+      },
     ],
   },
   // Adeptus Custodes
@@ -157,7 +177,10 @@ export const armies = [
         name: "Bloodletters of Khorne",
         min: 10,
         max: 30,
-        optionalSquadEquipment: [],
+        optionalSquadEquipment: [
+          "Instrument of Chaos (1 every 10 models)",
+          "Daemonic Icon (1 every 10 models)",
+        ],
         specialWeapons: [],
         heavyWeapons: [],
         hasLeader: true,

@@ -10,6 +10,7 @@
         v-model="hasLeader"
         @change="
           $emit('setLeader', {
+            hasLeader: hasLeader,
             leaderWeapon1Select: '',
             leaderWeapon2Select: '',
             leaderOptionalSelect: '',
@@ -24,13 +25,17 @@
       >
     </div>
     <!-- leaderWeapon1 -->
-    <div v-if="hasLeader" class="form-floating mb-3">
+    <div
+      v-if="hasLeader && currentSquad.leader.leaderWeapon1.length !== 0"
+      class="form-floating mb-3"
+    >
       <select
         class="form-select border-0"
         id="leader-weapon1-select"
         v-model="leaderWeapon1Select"
         @change="
           $emit('setLeader', {
+            hasLeader: true,
             leaderWeapon1Select: leaderWeapon1Select,
             leaderWeapon2Select: leaderWeapon2Select,
             leaderOptionalSelect: leaderOptionalSelect,
@@ -48,13 +53,17 @@
       <label for="leader-weapon1-select">Leader Weapon 1</label>
     </div>
     <!-- leaderWeapon2 -->
-    <div v-if="hasLeader" class="form-floating mb-3">
+    <div
+      v-if="hasLeader && currentSquad.leader.leaderWeapon2.length !== 0"
+      class="form-floating mb-3"
+    >
       <select
         class="form-select border-0"
         id="leader-weapon2-select"
         v-model="leaderWeapon2Select"
         @change="
           $emit('setLeader', {
+            hasLeader: true,
             leaderWeapon1Select: leaderWeapon1Select,
             leaderWeapon2Select: leaderWeapon2Select,
             leaderOptionalSelect: leaderOptionalSelect,
@@ -84,6 +93,7 @@
         v-model="leaderOptionalSelect"
         @change="
           $emit('setLeader', {
+            hasLeader: true,
             leaderWeapon1Select: leaderWeapon1Select,
             leaderWeapon2Select: leaderWeapon2Select,
             leaderOptionalSelect: leaderOptionalSelect,

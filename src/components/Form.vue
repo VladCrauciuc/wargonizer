@@ -103,14 +103,12 @@
         <span class="fw-bold">Heavy Weapon:</span>
         {{ army.heavyWeapon }}
       </p>
-      <p
-        v-if="army.leaderWeapon1 || army.leaderWeapon2 || army.leaderOptional"
-        class="fst-italic py-2"
-      >
+      <p v-if="army.leaderName" class="fst-italic py-2">
         <span class="fw-bold">Leader:</span>
-        {{ army.leaderName }} - {{ army.leaderWeapon1 }} -
-        {{ army.leaderWeapon2 }} -
-        {{ army.leaderOptional }}
+        {{ army.leaderName }}
+        <span v-if="army.leaderWeapon1"> - {{ army.leaderWeapon1 }}</span>
+        <span v-if="army.leaderWeapon2"> - {{ army.leaderWeapon2 }}</span>
+        <span v-if="army.leaderOptional"> - {{ army.leaderOptional }}</span>
       </p>
     </div>
   </div>
@@ -148,6 +146,7 @@ export default {
     let showSpecialWeapon = ref(false);
     let showHeavyWeapon = ref(false);
     let showLeader = ref(false);
+    let currentHasLeader = ref(false);
 
     let currentArmy = ref(null);
     let currentSquad = ref(null);
@@ -199,7 +198,8 @@ export default {
           currentSquad.value = squad;
         }
       });
-      // console.log(currentSquad.value.specialWeapons.length);
+      // --- console.log currentSquad.value for test purposes
+      // console.log(currentSquad.value.leader.name);
       showModelNumberInput.value = true;
       showOptionalSquadEquipment.value =
         !currentSquad.value.optionalSquadEquipment.length == 0 ? true : false;
@@ -251,6 +251,11 @@ export default {
     };
 
     const setCurrentLeader = (leader) => {
+      if (leader.hasLeader) {
+        currentHasLeader.value = leader.hasLeader;
+      } else {
+        currentHasLeader.value = false;
+      }
       if (leader.leaderWeapon1Select !== "") {
         currentSquad.value.leader.leaderWeapon1.forEach((weapon) => {
           if (leader.leaderWeapon1Select === weapon) {
@@ -299,15 +304,17 @@ export default {
         reset.value = !reset.value;
         error.value = "";
 
-        console.log(currentArmy.value.name);
-        console.log(currentSquad.value.name);
-        console.log(currentModelNumber.value);
-        console.log(currentOptionalSquadEquipment.value);
-        console.log(currentSpecialWeapon.value);
-        console.log(currentHeavyWeapon.value);
-        console.log(currentLeaderWeapon1.value);
-        console.log(currentLeaderWeapon2.value);
-        console.log(currentLeaderOptional.value);
+        // --- console.log values for test purposes ---
+        // console.log(currentArmy.value.name);
+        // console.log(currentSquad.value.name);
+        // console.log(currentModelNumber.value);
+        // console.log(currentOptionalSquadEquipment.value);
+        // console.log(currentSpecialWeapon.value);
+        // console.log(currentHeavyWeapon.value);
+        // console.log(currentHasLeader.value);
+        // console.log(currentLeaderWeapon1.value);
+        // console.log(currentLeaderWeapon2.value);
+        // console.log(currentLeaderOptional.value);
 
         totalSelectedArmy.value.name = currentArmy.value.name;
         totalSelectedArmy.value.squadName = currentSquad.value.name;
@@ -316,7 +323,8 @@ export default {
           currentOptionalSquadEquipment.value;
         totalSelectedArmy.value.specialWeapon = currentSpecialWeapon.value;
         totalSelectedArmy.value.heavyWeapon = currentHeavyWeapon.value;
-        totalSelectedArmy.value.leaderName = currentSquad.value.leader.name;
+        totalSelectedArmy.value.leaderName =
+          currentHasLeader.value != false ? currentSquad.value.leader.name : "";
         totalSelectedArmy.value.leaderWeapon1 = currentLeaderWeapon1.value;
         totalSelectedArmy.value.leaderWeapon2 = currentLeaderWeapon2.value;
         totalSelectedArmy.value.leaderOptional = currentLeaderOptional.value;
@@ -347,6 +355,7 @@ export default {
       currentOptionalSquadEquipment.value = "";
       currentSpecialWeapon.value = "";
       currentHeavyWeapon.value = "";
+      currentHasLeader.value = false;
       currentLeaderWeapon1.value = "";
       currentLeaderWeapon1.value = "";
       currentLeaderOptional.value = "";
@@ -373,6 +382,7 @@ export default {
       setCurrentHeavyWeapon,
       currentHeavyWeapon,
       showLeader,
+      currentHasLeader,
       setCurrentLeader,
       currentLeaderWeapon1,
       currentLeaderWeapon2,
