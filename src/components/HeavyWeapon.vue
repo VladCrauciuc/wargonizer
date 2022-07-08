@@ -5,7 +5,7 @@
       <input
         class="form-check-input"
         type="checkbox"
-        :disabled="allowHeavyWeapon"
+        :disabled="dontAllowHeavyWeapon"
         role="switch"
         id="has-heavy-weapon-switch"
         v-model="hasHeavyWeapon"
@@ -50,7 +50,7 @@ export default {
   emits: ["setHeavyWeapon"],
 
   setup(props, { emit }) {
-    const allowHeavyWeapon = ref(false);
+    const dontAllowHeavyWeapon = ref(false);
     const hasHeavyWeapon = ref(false);
 
     const heavyWeaponSelect = ref("");
@@ -60,6 +60,7 @@ export default {
     watch(
       () => props.currentSquad,
       () => {
+        dontAllowHeavyWeapon.value = null;
         hasHeavyWeapon.value = false;
         heavyWeaponSelect.value = "";
       }
@@ -71,21 +72,23 @@ export default {
       () => [props.currentModelNumber, props.currentSpecialWeapon],
       () => {
         if (
+          props.currentSquad.restrictSpecialAndHeavy &&
           props.currentModelNumber < props.currentSquad.max &&
           props.currentSpecialWeapon !== ""
         ) {
-          allowHeavyWeapon.value = true;
-          console.log(allowHeavyWeapon.value);
+          dontAllowHeavyWeapon.value = true;
+          hasHeavyWeapon.value = false;
+          // console.log(dontAllowHeavyWeapon.value);
           // console.log(props.currentSpecialWeapon);
         } else {
-          allowHeavyWeapon.value = null;
-          console.log(allowHeavyWeapon.value);
+          dontAllowHeavyWeapon.value = null;
+          // console.log(dontAllowHeavyWeapon.value);
           // console.log(props.currentSpecialWeapon);
         }
       }
     );
 
-    return { allowHeavyWeapon, hasHeavyWeapon, heavyWeaponSelect };
+    return { dontAllowHeavyWeapon, hasHeavyWeapon, heavyWeaponSelect };
   },
 };
 </script>
