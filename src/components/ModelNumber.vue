@@ -3,6 +3,10 @@
   <div class="form-group mb-3">
     <div class="form-floating">
       <input
+        @change="
+          adjustNumber($event);
+          handleModelNumberInput();
+        "
         @keydown.enter.prevent="
           adjustNumber($event);
           handleModelNumberInput();
