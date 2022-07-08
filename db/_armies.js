@@ -205,6 +205,7 @@ export const armies = [
         optionalSquadEquipment: [],
         specialWeapons: [],
         heavyWeapons: [],
+        hasLeader: true,
         leader: {
           name: "Sybarite",
           leaderWeapon1: ["Power Sword", "Agoniser"],

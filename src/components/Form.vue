@@ -26,12 +26,16 @@
     <!-- special weapon comes from here -->
     <SpecialWeapon
       :currentSquad="currentSquad"
+      :currentModelNumber="currentModelNumber"
+      :currentHeavyWeapon="currentHeavyWeapon"
       v-if="showSpecialWeapon"
       @setSpecialWeapon="setCurrentSpecialWeapon"
     />
     <!-- heavy weapon comes from here -->
     <HeavyWeapon
       :currentSquad="currentSquad"
+      :currentModelNumber="currentModelNumber"
+      :currentSpecialWeapon="currentSpecialWeapon"
       v-if="showHeavyWeapon"
       @setHeavyWeapon="setCurrentHeavyWeapon"
     />
@@ -150,7 +154,7 @@ export default {
 
     let currentArmy = ref(null);
     let currentSquad = ref(null);
-    let currentModelNumber = ref("");
+    let currentModelNumber = ref(0);
     let currentOptionalSquadEquipment = ref("");
     let currentSpecialWeapon = ref("");
     let currentHeavyWeapon = ref("");
@@ -351,7 +355,7 @@ export default {
       // reset current values
       currentArmy.value = {};
       currentSquad.value = {};
-      currentModelNumber.value = "";
+      currentModelNumber.value = 0;
       currentOptionalSquadEquipment.value = "";
       currentSpecialWeapon.value = "";
       currentHeavyWeapon.value = "";

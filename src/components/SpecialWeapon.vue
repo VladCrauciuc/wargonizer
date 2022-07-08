@@ -5,6 +5,7 @@
       <input
         class="form-check-input"
         type="checkbox"
+        :disabled="allowSpecialWeapon"
         role="switch"
         id="has-special-weapon-switch"
         v-model="hasSpecialWeapon"
@@ -40,11 +41,16 @@ import { ref } from "@vue/reactivity";
 import { watch } from "@vue/runtime-core";
 
 export default {
-  props: { currentSquad: Object },
+  props: {
+    currentSquad: Object,
+    currentModelNumber: Number,
+    currentHeavyWeapon: String,
+  },
 
   emits: ["setSpecialWeapon"],
 
   setup(props, { emit }) {
+    const allowSpecialWeapon = ref(false);
     const hasSpecialWeapon = ref(false);
 
     const specialWeaponSelect = ref("");
@@ -59,7 +65,27 @@ export default {
       }
     );
 
-    return { hasSpecialWeapon, specialWeaponSelect };
+    // watch for currentModelNumber and currentHeavyWeapon values
+    // disable hasSpecialWeapon if currentModelNumber < currentSquad.max and currentHeavyWeapon.value !== ''
+    watch(
+      () => [props.currentModelNumber, props.currentHeavyWeapon],
+      () => {
+        if (
+          props.currentModelNumber < props.currentSquad.max &&
+          props.currentHeavyWeapon !== ""
+        ) {
+          allowSpecialWeapon.value = true;
+          console.log(allowSpecialWeapon.value);
+          // console.log(props.currentHeavyWeapon);
+        } else {
+          allowSpecialWeapon.value = null;
+          console.log(allowSpecialWeapon.value);
+          // console.log(props.currentHeavyWeapon);
+        }
+      }
+    );
+
+    return { allowSpecialWeapon, hasSpecialWeapon, specialWeaponSelect };
   },
 };
 </script>

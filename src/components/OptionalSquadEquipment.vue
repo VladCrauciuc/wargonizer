@@ -5,6 +5,7 @@
       <input
         class="form-check-input"
         type="checkbox"
+        :disabled="undefined"
         role="switch"
         id="has-optional-equipment-switch"
         v-model="hasOptionalSquadEquipment"
