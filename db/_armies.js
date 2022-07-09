@@ -678,7 +678,7 @@ export const armies = [
         optionalSquadEquipment: [],
         restrictSpecialAndHeavy: true,
         specialWeapons: [],
-        weaponsWeapons: [],
+        heavyWeapons: [],
         hasLeader: false,
         leader: {},
       },

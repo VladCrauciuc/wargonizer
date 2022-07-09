@@ -53,18 +53,20 @@
     </div>
   </form>
   <!-- temp container for saved armies -->
-  <div
-    @click="army.showAdditionalOptions = !army.showAdditionalOptions"
-    class="row mx-0 mt-3"
-    v-for="army in armyArr"
-    :key="army.name"
-  >
+  <div class="row mx-0 mt-3" v-for="army in armyArr" :key="army.name">
     <!-- army name, squad name, model number name div -->
-    <div class="col-12 py-3 bg-secondary">
-      <p class="mx-3 my-0">
-        <span class="me-3 fst-italic h4">{{ army.name }}</span>
-        <span>{{ army.squadName }} ({{ army.number }} models)</span>
-      </p>
+    <div
+      @click="army.showAdditionalOptions = !army.showAdditionalOptions"
+      class="col-12 py-2 bg-secondary"
+    >
+      <div class="row flex-row">
+        <div class="col-sm-12 col-lg-3 d-flex align-items-center">
+          <p class="fst-italic h4 mb-0">{{ army.name }}</p>
+        </div>
+        <div class="col-sm-12 col-lg-9 d-flex align-items-center">
+          <p class="mb-0">{{ army.squadName }} ({{ army.number }} models)</p>
+        </div>
+      </div>
     </div>
     <!-- additional options div -->
     <div
@@ -75,21 +77,21 @@
         <div class="col-12 col-lg-6">
           <p
             v-if="army.optSquadEquip"
-            class="ms-2 pe-2 my-0 border-end border-2 border-secondary"
+            class="ms-1 pe-2 my-0 border-end border-2 border-secondary"
           >
             <span class="text-info">Optional Squad Equipment: </span>
             <span>{{ army.optSquadEquip }}</span>
           </p>
           <p
             v-if="army.specialWeapon"
-            class="ms-2 pe-2 my-0 border-end border-2 border-secondary"
+            class="ms-1 pe-2 my-0 border-end border-2 border-secondary"
           >
             <span class="text-info">Special Weapon: </span>
             <span>{{ army.specialWeapon }}</span>
           </p>
           <p
             v-if="army.heavyWeapon"
-            class="ms-2 pe-2 my-0 border-end border-2 border-secondary"
+            class="ms-1 pe-2 my-0 border-end border-2 border-secondary"
           >
             <span class="text-info">Heavy Weapon: </span>
             <span>{{ army.heavyWeapon }}</span>
@@ -97,27 +99,46 @@
         </div>
         <div class="col-12 col-lg-6">
           <p
+            v-if="army.leaderName"
+            class="ms-1 pe-2 my-0 border-end border-2 border-secondary"
+          >
+            <span class="text-info">Leader: </span>
+            <span>{{ army.leaderName }}</span>
+          </p>
+          <p
             v-if="army.leaderWeapon1"
-            class="ms-2 pe-2 my-0 border-end border-2 border-secondary"
+            class="ms-1 pe-2 my-0 border-end border-2 border-secondary"
           >
             <span class="text-info">Leader Weapon 1: </span>
             <span>{{ army.leaderWeapon1 }}</span>
           </p>
           <p
             v-if="army.leaderWeapon2"
-            class="ms-2 pe-2 my-0 border-end border-2 border-secondary"
+            class="ms-1 pe-2 my-0 border-end border-2 border-secondary"
           >
             <span class="text-info">Leader Weapon 2: </span>
             <span>{{ army.leaderWeapon2 }}</span>
           </p>
           <p
             v-if="army.leaderOptional"
-            class="ms-2 pe-2 my-0 border-end border-2 border-secondary"
+            class="ms-1 pe-2 my-0 border-end border-2 border-secondary"
           >
             <span class="text-info">Leader Optional Weapon: </span>
             <span>{{ army.leaderOptional }}</span>
           </p>
         </div>
+      </div>
+      <div class="row justify-content-center px-2 mt-3">
+        <button
+          @click="
+            armyArr = armyArr.filter((item) => {
+              return item !== army;
+            })
+          "
+          class="btn btn-danger w-auto"
+        >
+          Delete Squad
+        </button>
       </div>
     </div>
     <div>
@@ -168,6 +189,7 @@ export default {
     let currentOptionalSquadEquipment = ref("");
     let currentSpecialWeapon = ref("");
     let currentHeavyWeapon = ref("");
+    let currentLeader = ref("");
     let currentLeaderWeapon1 = ref("");
     let currentLeaderWeapon2 = ref("");
     let currentLeaderOptional = ref("");
@@ -180,7 +202,7 @@ export default {
       optSquadEquip: ref(currentOptionalSquadEquipment.value),
       specialWeapon: ref(currentSpecialWeapon.value),
       heavyWeapon: ref(currentHeavyWeapon.value),
-      leaderName: ref(currentSquad.value.leader.name),
+      leaderName: ref(currentLeader.value),
       leaderWeapon1: ref(currentLeaderWeapon1.value),
       leaderWeapon2: ref(currentLeaderWeapon2.value),
       leaderOptional: ref(currentLeaderOptional.value),
@@ -269,8 +291,10 @@ export default {
     const setCurrentLeader = (leader) => {
       if (leader.hasLeader) {
         currentHasLeader.value = leader.hasLeader;
+        currentLeader.value = currentSquad.value.leader.name;
       } else {
         currentHasLeader.value = false;
+        currentLeader.value = "";
       }
       if (leader.leaderWeapon1Select !== "") {
         currentSquad.value.leader.leaderWeapon1.forEach((weapon) => {
@@ -349,6 +373,7 @@ export default {
       currentSpecialWeapon.value = "";
       currentHeavyWeapon.value = "";
       currentHasLeader.value = false;
+      currentLeader.value = "";
       currentLeaderWeapon1.value = "";
       currentLeaderWeapon2.value = "";
       currentLeaderOptional.value = "";
@@ -377,6 +402,7 @@ export default {
       currentHeavyWeapon,
       showLeader,
       currentHasLeader,
+      currentLeader,
       setCurrentLeader,
       currentLeaderWeapon1,
       currentLeaderWeapon2,
