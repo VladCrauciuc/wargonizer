@@ -129,6 +129,7 @@
         </div>
       </div>
       <div class="row justify-content-center px-2 mt-3">
+        <!-- delete button -->
         <button
           @click="
             armyArr = armyArr.filter((item) => {
@@ -139,6 +140,8 @@
         >
           Delete Squad
         </button>
+        <!-- completed button -->
+        <button class="ms-3 btn btn-success w-auto">Mark as Completed</button>
       </div>
     </div>
     <div>
