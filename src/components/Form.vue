@@ -54,13 +54,13 @@
   </form>
   <!-- temp container for saved armies -->
   <div
-    @click="showAdditionalOptions = !showAdditionalOptions"
+    @click="army.showAdditionalOptions = !army.showAdditionalOptions"
     class="row mx-0 mt-3"
     v-for="army in armyArr"
     :key="army.name"
   >
     <!-- army name, squad name, model number name div -->
-    <div class="col-12 py-3 bg-secondary rounded">
+    <div class="col-12 py-3 bg-secondary">
       <p class="mx-3 my-0">
         <span class="me-3 fst-italic h4">{{ army.name }}</span>
         <span>{{ army.squadName }} ({{ army.number }} models)</span>
@@ -68,8 +68,8 @@
     </div>
     <!-- additional options div -->
     <div
-      v-if="showAdditionalOptions === true"
-      class="col-12 py-3 border border-2 border-secondary"
+      v-if="army.showAdditionalOptions"
+      class="col-12 py-3 border-start border-end border-bottom border-2 border-secondary"
     >
       <div class="row">
         <div class="col-12 col-lg-6">
@@ -173,6 +173,7 @@ export default {
     let currentLeaderOptional = ref("");
 
     let totalSelectedArmy = computed(() => ({
+      showAdditionalOptions: ref(false),
       name: ref(currentArmy.value.name),
       squadName: ref(currentSquad.value.name),
       number: ref(currentModelNumber.value),
