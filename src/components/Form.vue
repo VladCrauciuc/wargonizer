@@ -53,67 +53,75 @@
     </div>
   </form>
   <!-- temp container for saved armies -->
-  <div class="row mx-0">
+  <div
+    @click="showAdditionalOptions = !showAdditionalOptions"
+    class="row mx-0 mt-3"
+    v-for="army in armyArr"
+    :key="army.name"
+  >
+    <!-- army name, squad name, model number name div -->
+    <div class="col-12 py-3 bg-secondary rounded">
+      <p class="mx-3 my-0">
+        <span class="me-3 fst-italic h4">{{ army.name }}</span>
+        <span>{{ army.squadName }} ({{ army.number }} models)</span>
+      </p>
+    </div>
+    <!-- additional options div -->
     <div
-      class="col-12 mt-3 pt-3 bg-secondary text-light rounded"
-      v-for="army in armyArr"
-      :key="army.name"
+      v-if="showAdditionalOptions === true"
+      class="col-12 py-3 border border-2 border-secondary"
     >
-      <p class="fst-italic h4">
-        <span class="fw-bold">Army:</span> {{ army.name }}
-      </p>
-      <p class="fst-italic mb-0 py-2">
-        <span class="fw-bold">Squad:</span> {{ army.squadName }}
-      </p>
-      <p
-        class="fst-italic py-2"
-        :class="{
-          'mb-0':
-            army.optSquadEquip ||
-            army.specialWeapon ||
-            army.heavyWeapon ||
-            army.leaderWeapon1 ||
-            army.leaderWeapon2 ||
-            army.leaderOptional,
-        }"
-      >
-        <span class="fw-bold">Number of models:</span>
-        {{ army.number }} models
-      </p>
-      <p
-        v-if="army.optSquadEquip"
-        class="fst-italic py-2"
-        :class="{ 'mb-0': army.specialWeapon }"
-      >
-        <span class="fw-bold">Optional Squad Equipment:</span>
-        {{ army.optSquadEquip }}
-      </p>
-      <p
-        v-if="army.specialWeapon"
-        class="fst-italic py-2"
-        :class="{ 'mb-0': army.heavyWeapon }"
-      >
-        <span class="fw-bold">Special Weapon:</span>
-        {{ army.specialWeapon }}
-      </p>
-      <p
-        v-if="army.heavyWeapon"
-        class="fst-italic py-2"
-        :class="{
-          'mb-0':
-            army.leaderWeapon1 || army.leaderWeapon2 || army.leaderOptional,
-        }"
-      >
-        <span class="fw-bold">Heavy Weapon:</span>
-        {{ army.heavyWeapon }}
-      </p>
-      <p v-if="army.leaderName" class="fst-italic py-2">
-        <span class="fw-bold">Leader:</span>
-        {{ army.leaderName }}
-        <span v-if="army.leaderWeapon1"> - {{ army.leaderWeapon1 }}</span>
-        <span v-if="army.leaderWeapon2"> - {{ army.leaderWeapon2 }}</span>
-        <span v-if="army.leaderOptional"> - {{ army.leaderOptional }}</span>
-      </p>
+      <div class="row">
+        <div class="col-12 col-lg-6">
+          <p
+            v-if="army.optSquadEquip"
+            class="ms-2 pe-2 my-0 border-end border-2 border-secondary"
+          >
+            <span class="text-info">Optional Squad Equipment: </span>
+            <span>{{ army.optSquadEquip }}</span>
+          </p>
+          <p
+            v-if="army.specialWeapon"
+            class="ms-2 pe-2 my-0 border-end border-2 border-secondary"
+          >
+            <span class="text-info">Special Weapon: </span>
+            <span>{{ army.specialWeapon }}</span>
+          </p>
+          <p
+            v-if="army.heavyWeapon"
+            class="ms-2 pe-2 my-0 border-end border-2 border-secondary"
+          >
+            <span class="text-info">Heavy Weapon: </span>
+            <span>{{ army.heavyWeapon }}</span>
+          </p>
+        </div>
+        <div class="col-12 col-lg-6">
+          <p
+            v-if="army.leaderWeapon1"
+            class="ms-2 pe-2 my-0 border-end border-2 border-secondary"
+          >
+            <span class="text-info">Leader Weapon 1: </span>
+            <span>{{ army.leaderWeapon1 }}</span>
+          </p>
+          <p
+            v-if="army.leaderWeapon2"
+            class="ms-2 pe-2 my-0 border-end border-2 border-secondary"
+          >
+            <span class="text-info">Leader Weapon 2: </span>
+            <span>{{ army.leaderWeapon2 }}</span>
+          </p>
+          <p
+            v-if="army.leaderOptional"
+            class="ms-2 pe-2 my-0 border-end border-2 border-secondary"
+          >
+            <span class="text-info">Leader Optional Weapon: </span>
+            <span>{{ army.leaderOptional }}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <!-- <p>No additional options and loadouts</p> -->
     </div>
   </div>
 </template>
@@ -129,6 +137,7 @@ import OptionalSquadEquipment from "./OptionalSquadEquipment.vue";
 import SpecialWeapon from "./SpecialWeapon.vue";
 import HeavyWeapon from "./HeavyWeapon.vue";
 import Leader from "./Leader.vue";
+import { computed } from "@vue/runtime-core";
 
 export default {
   components: {
@@ -151,6 +160,7 @@ export default {
     let showHeavyWeapon = ref(false);
     let showLeader = ref(false);
     let currentHasLeader = ref(false);
+    let showAdditionalOptions = ref(false);
 
     let currentArmy = ref(null);
     let currentSquad = ref(null);
@@ -162,18 +172,19 @@ export default {
     let currentLeaderWeapon2 = ref("");
     let currentLeaderOptional = ref("");
 
-    let totalSelectedArmy = ref({
-      name: "",
-      squadName: "",
-      number: "",
-      optSquadEquip: "",
-      specialWeapon: "",
-      heavyWeapon: "",
-      leaderName: "",
-      leaderWeapon1: "",
-      leaderWeapon2: "",
-      leaderOptional: "",
-    });
+    let totalSelectedArmy = computed(() => ({
+      name: ref(currentArmy.value.name),
+      squadName: ref(currentSquad.value.name),
+      number: ref(currentModelNumber.value),
+      optSquadEquip: ref(currentOptionalSquadEquipment.value),
+      specialWeapon: ref(currentSpecialWeapon.value),
+      heavyWeapon: ref(currentHeavyWeapon.value),
+      leaderName: ref(currentSquad.value.leader.name),
+      leaderWeapon1: ref(currentLeaderWeapon1.value),
+      leaderWeapon2: ref(currentLeaderWeapon2.value),
+      leaderOptional: ref(currentLeaderOptional.value),
+    }));
+    // let totalSelectedArmy = ref({});
     let armyArr = ref([]);
 
     const setCurrentArmy = (factionSelect) => {
@@ -320,31 +331,8 @@ export default {
         // console.log(currentLeaderWeapon2.value);
         // console.log(currentLeaderOptional.value);
 
-        totalSelectedArmy.value.name = currentArmy.value.name;
-        totalSelectedArmy.value.squadName = currentSquad.value.name;
-        totalSelectedArmy.value.number = currentModelNumber.value;
-        totalSelectedArmy.value.optSquadEquip =
-          currentOptionalSquadEquipment.value;
-        totalSelectedArmy.value.specialWeapon = currentSpecialWeapon.value;
-        totalSelectedArmy.value.heavyWeapon = currentHeavyWeapon.value;
-        totalSelectedArmy.value.leaderName =
-          currentHasLeader.value != false ? currentSquad.value.leader.name : "";
-        totalSelectedArmy.value.leaderWeapon1 = currentLeaderWeapon1.value;
-        totalSelectedArmy.value.leaderWeapon2 = currentLeaderWeapon2.value;
-        totalSelectedArmy.value.leaderOptional = currentLeaderOptional.value;
         armyArr.value.push(totalSelectedArmy.value);
-        totalSelectedArmy.value = {
-          name: "",
-          squadName: "",
-          number: "",
-          optSquadEquip: "",
-          specialWeapon: "",
-          heavyWeapon: "",
-          leaderName: "",
-          leaderWeapon1: "",
-          leaderWeapon2: "",
-          leaderOptional: "",
-        };
+
         showSquadSelect.value = false;
         showModelNumberInput.value = false;
         showOptionalSquadEquipment.value = false;
@@ -366,6 +354,7 @@ export default {
     };
 
     return {
+      showAdditionalOptions,
       reset,
       error,
       setCurrentArmy,
