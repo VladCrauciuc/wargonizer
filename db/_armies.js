@@ -476,6 +476,7 @@ export const armies = [
           "Missile Launcher",
           "Reaper Chaincannon",
         ],
+        hasLeader: true,
         leader: {
           name: "Aspiring Champion",
           leaderWeapon1: [

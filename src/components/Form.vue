@@ -349,7 +349,7 @@ export default {
       currentHeavyWeapon.value = "";
       currentHasLeader.value = false;
       currentLeaderWeapon1.value = "";
-      currentLeaderWeapon1.value = "";
+      currentLeaderWeapon2.value = "";
       currentLeaderOptional.value = "";
     };
 
