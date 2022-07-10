@@ -48,7 +48,7 @@
 
     <div class="d-flex justify-content-center">
       <button @click="displayValues()" class="w-25 btn btn-primary">
-        Display
+        Save
       </button>
     </div>
   </form>
