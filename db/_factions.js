@@ -767,14 +767,11 @@ export const factions = [
         squadValue: "TacticalSquad",
         min: 5,
         max: 10,
-        alternativeSquadBasicLoadout: [],
-        optionalSquadEquipment: [],
-        restrictSpecialAndHeavy: true,
         specialWeapons: [
           "Flamer (1 model)",
           "Grav-gun (1 model)",
           "Meltagun (1 model)",
-          "Plasma gun (1 model)",
+          "Plasma Gun (1 model)",
         ],
         heavyWeapons: [
           "Grav-cannon (1 model)",

@@ -5,11 +5,11 @@
       <input
         @change="
           adjustNumber($event);
-          $emit('setModelNumber', modelNumberInput.value);
+          $emit('setModelNumber', modelNumberInput);
         "
         @keydown.enter.prevent="
           adjustNumber($event);
-          $emit('setModelNumber', modelNumberInput.value);
+          $emit('setModelNumber', modelNumberInput);
         "
         type="number"
         class="form-control border-0"

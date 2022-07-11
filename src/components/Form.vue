@@ -12,6 +12,7 @@
       v-if="showModelNumberInput"
       :currentSquad="currentSquad"
       :currentFaction="currentFaction"
+      @setModelNumber="setCurrentModelNumber"
     />
     <component
       v-if="currentSquad"
