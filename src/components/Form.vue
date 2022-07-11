@@ -5,10 +5,14 @@
     <!-- squad comes from here -->
     <Squad
       v-if="showSquadSelect"
-      :currentArmy="currentFaction"
+      :currentFaction="currentFaction"
       @setSquad="setCurrentSquad"
     />
-    <component v-if="currentSquad" :is="currentSquad.squadValue"></component>
+    <component
+      :currentSquad="currentSquad"
+      v-if="currentSquad"
+      :is="currentSquad.squadValue"
+    ></component>
   </form>
 </template>
 
@@ -41,7 +45,7 @@ export default {
 
     // let totalSelectedArmy = computed(() => ({
     //   showAdditionalOptions: ref(false),
-    //   name: ref(currentArmy.value.name),
+    //   name: ref(currentFaction.value.name),
     //   squadName: ref(currentSquad.value.name),
     //   number: ref(currentModelNumber.value),
     //   optSquadEquip: ref(currentOptionalSquadEquipment.value),

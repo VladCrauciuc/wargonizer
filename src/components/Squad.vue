@@ -9,7 +9,7 @@
         @change="$emit('setSquad', squadSelect)"
       >
         <option value="" hidden>Select a squad</option>
-        <option v-for="squad in currentArmy.squads" :key="squad.squadName">
+        <option v-for="squad in currentFaction.squads" :key="squad.squadName">
           {{ squad.squadName }}
         </option>
       </select>
@@ -23,7 +23,7 @@ import { ref } from "@vue/reactivity";
 import { watch } from "@vue/runtime-core";
 
 export default {
-  props: { currentArmy: Object },
+  props: { currentFaction: Object },
 
   emits: ["setSquad"],
 
@@ -32,7 +32,7 @@ export default {
 
     // reset to empty value when army change
     watch(
-      () => props.currentArmy,
+      () => props.currentFaction,
       () => {
         squadSelect.value = "";
       }
