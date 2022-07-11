@@ -1,4 +1,4 @@
-export const armies = [
+export const factions = [
   // Adepta Sororitas
   {
     name: "Adepta Sororitas",

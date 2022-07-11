@@ -9,8 +9,8 @@
         @change="$emit('setArmy', factionSelect)"
       >
         <option value="" hidden>Select a faction</option>
-        <option v-for="army in armies" :key="army.name">
-          {{ army.name }}
+        <option v-for="faction in factions" :key="faction.name">
+          {{ faction.name }}
         </option>
       </select>
       <label for="faction-select">Faction</label>
@@ -21,7 +21,7 @@
 <script>
 import { ref } from "@vue/reactivity";
 import { watch } from "@vue/runtime-core";
-import { armies } from "../../db/_armies";
+import { factions } from "../../db/_factions";
 
 export default {
   props: { reset: Boolean },
@@ -39,7 +39,7 @@ export default {
       }
     );
 
-    return { armies, factionSelect };
+    return { factions, factionSelect };
   },
 };
 </script>
