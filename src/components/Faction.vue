@@ -6,7 +6,7 @@
         class="form-select border-0"
         id="faction-select"
         v-model="factionSelect"
-        @change="$emit('setArmy', factionSelect)"
+        @change="$emit('setFaction', factionSelect)"
       >
         <option value="" hidden>Select a faction</option>
         <option v-for="faction in factions" :key="faction.name">
@@ -26,7 +26,7 @@ import { factions } from "../../db/_factions";
 export default {
   props: { reset: Boolean },
 
-  emits: ["setArmy"],
+  emits: ["setFaction"],
 
   setup(props, { emit }) {
     const factionSelect = ref("");

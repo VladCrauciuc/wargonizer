@@ -1,13 +1,14 @@
 <template>
   <form @submit.prevent>
     <!-- faction comes from here -->
-    <Faction @setArmy="setCurrentArmy" :reset="reset" />
+    <Faction @setFaction="setCurrentFaction" :reset="reset" />
     <!-- squad comes from here -->
     <Squad
       v-if="showSquadSelect"
-      :currentArmy="currentArmy"
+      :currentArmy="currentFaction"
       @setSquad="setCurrentSquad"
     />
+    <component v-if="currentSquad" :is="currentSquad.squadValue"></component>
   </form>
 </template>
 
@@ -35,7 +36,7 @@ export default {
 
     let showSquadSelect = ref(false);
 
-    let currentArmy = ref(null);
+    let currentFaction = ref(null);
     let currentSquad = ref(null);
 
     // let totalSelectedArmy = computed(() => ({
@@ -52,22 +53,22 @@ export default {
     //   leaderOptional: ref(currentLeaderOptional.value),
     // }));
 
-    const setCurrentArmy = (factionSelect) => {
+    const setCurrentFaction = (factionSelect) => {
       if (factionSelect !== "") {
         // showSquadSelect.value = false;
-        factions.forEach((army) => {
-          if (factionSelect === army.name) {
-            currentArmy.value = army;
+        factions.forEach((faction) => {
+          if (factionSelect === faction.name) {
+            currentFaction.value = faction;
           }
         });
         showSquadSelect.value = true;
       } else {
-        currentArmy.value = {};
+        currentFaction.value = {};
       }
     };
 
     const setCurrentSquad = (squadSelect) => {
-      currentArmy.value.squads.forEach((squad) => {
+      currentFaction.value.squads.forEach((squad) => {
         if (squadSelect === squad.squadName) {
           currentSquad.value = squad;
         }
@@ -79,8 +80,8 @@ export default {
     return {
       reset,
       error,
-      setCurrentArmy,
-      currentArmy,
+      setCurrentFaction,
+      currentFaction,
       showSquadSelect,
       setCurrentSquad,
       currentSquad,
