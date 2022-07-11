@@ -68,12 +68,12 @@ export default {
 
     const setCurrentSquad = (squadSelect) => {
       currentArmy.value.squads.forEach((squad) => {
-        if (squadSelect === squad.name) {
+        if (squadSelect === squad.squadName) {
           currentSquad.value = squad;
         }
       });
       // --- console.log currentSquad.value for test purposes
-      // console.log(currentSquad.value.leader.name);
+      console.log(currentSquad.value);
     };
 
     return {

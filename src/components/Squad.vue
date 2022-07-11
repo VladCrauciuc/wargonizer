@@ -9,8 +9,12 @@
         @change="$emit('setSquad', squadSelect)"
       >
         <option value="" hidden>Select a squad</option>
-        <option v-for="squad in currentArmy.squads" :key="squad.name">
-          {{ squad.name }}
+        <option
+          v-for="squad in currentArmy.squads"
+          :key="squad.squadName"
+          :value="squad.squadValue"
+        >
+          {{ squad.squadName }}
         </option>
       </select>
       <label for="squad-select">Squad</label>
