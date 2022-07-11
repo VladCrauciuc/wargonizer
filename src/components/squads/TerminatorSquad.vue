@@ -1,5 +1,5 @@
 <template>
-  <p>Assault Squad</p>
+  <p>Terminator Squad</p>
 </template>
 
 <script>

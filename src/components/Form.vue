@@ -8,10 +8,16 @@
       :currentFaction="currentFaction"
       @setSquad="setCurrentSquad"
     />
-    <component
+    <ModelNumber
+      v-if="showModelNumberInput"
       :currentSquad="currentSquad"
+      :currentFaction="currentFaction"
+    />
+    <component
       v-if="currentSquad"
       :is="currentSquad.squadValue"
+      :currentSquad="currentSquad"
+      :currentModelNumber="currentModelNumber"
     ></component>
   </form>
 </template>
@@ -23,39 +29,27 @@ import { factions } from "../../db/_factions.js";
 
 import Faction from "./Faction.vue";
 import Squad from "./Squad.vue";
+import ModelNumber from "./ModelNumber.vue";
 
-import TacticalSquad from "../components/squads/TacticalSquad.vue";
-import AssaultSquad from "../components/squads/AssaultSquad.vue";
+import squads from "./squads/_index";
 
 export default {
   components: {
     Faction,
     Squad,
-    TacticalSquad,
-    AssaultSquad,
+    ModelNumber,
+    ...squads,
   },
   setup() {
     let reset = ref(false);
     let error = ref("");
 
     let showSquadSelect = ref(false);
+    let showModelNumberInput = ref(false);
 
     let currentFaction = ref(null);
     let currentSquad = ref(null);
-
-    // let totalSelectedArmy = computed(() => ({
-    //   showAdditionalOptions: ref(false),
-    //   name: ref(currentFaction.value.name),
-    //   squadName: ref(currentSquad.value.name),
-    //   number: ref(currentModelNumber.value),
-    //   optSquadEquip: ref(currentOptionalSquadEquipment.value),
-    //   specialWeapon: ref(currentSpecialWeapon.value),
-    //   heavyWeapon: ref(currentHeavyWeapon.value),
-    //   leaderName: ref(currentLeader.value),
-    //   leaderWeapon1: ref(currentLeaderWeapon1.value),
-    //   leaderWeapon2: ref(currentLeaderWeapon2.value),
-    //   leaderOptional: ref(currentLeaderOptional.value),
-    // }));
+    let currentModelNumber = ref(0);
 
     const setCurrentFaction = (factionSelect) => {
       if (factionSelect !== "") {
@@ -77,8 +71,13 @@ export default {
           currentSquad.value = squad;
         }
       });
-      // --- console.log currentSquad.value for test purposes
-      console.log(currentSquad.value);
+      showModelNumberInput.value = true;
+      // --- console.log currentSquad.value for test purposes ---
+      // console.log(currentSquad.value);
+    };
+
+    const setCurrentModelNumber = (modelNumberInput) => {
+      currentModelNumber.value = modelNumberInput;
     };
 
     return {
@@ -89,6 +88,9 @@ export default {
       showSquadSelect,
       setCurrentSquad,
       currentSquad,
+      showModelNumberInput,
+      setCurrentModelNumber,
+      currentModelNumber,
     };
   },
 };

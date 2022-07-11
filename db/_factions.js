@@ -1,5 +1,5 @@
 export const factions = [
-  // Adepta Sororitas
+  // // Adepta Sororitas
   // {
   //   name: "Adepta Sororitas",
   //   squads: [
