@@ -10,6 +10,7 @@
         id="has-special-weapon-switch"
         v-model="hasSpecialWeapon"
         @change="
+          setSpecialAndHeavy();
           dontAllowHeavyWeapon = null;
           specialWeaponSelect = '';
         "
@@ -24,7 +25,10 @@
         class="form-select border-0"
         id="special-weapon-select"
         v-model="specialWeaponSelect"
-        @change="checkSpecialAndHeavy"
+        @change="
+          checkSpecialAndHeavy();
+          setSpecialAndHeavy();
+        "
       >
         <option value="" hidden>Select Special Weapon</option>
         <option v-for="weapon in currentSquad.specialWeapons" :key="weapon">
@@ -43,6 +47,7 @@
         id="has-heavy-weapon-switch"
         v-model="hasHeavyWeapon"
         @change="
+          setSpecialAndHeavy();
           dontAllowSpecialWeapon = null;
           heavyWeaponSelect = '';
         "
@@ -57,7 +62,10 @@
         class="form-select border-0"
         id="heavy-weapon-select"
         v-model="heavyWeaponSelect"
-        @change="checkSpecialAndHeavy"
+        @change="
+          checkSpecialAndHeavy();
+          setSpecialAndHeavy();
+        "
       >
         <option value="" hidden>Select Heavy Weapon</option>
         <option v-for="weapon in currentSquad.heavyWeapons" :key="weapon">
@@ -65,64 +73,6 @@
         </option>
       </select>
       <label for="special-weapon-select">Heavy Weapon</label>
-    </div>
-    <!-- hasLeader Switch -->
-    <div class="form-check form-switch mb-3">
-      <input
-        class="form-check-input"
-        type="checkbox"
-        role="switch"
-        id="has-leader-switch"
-        v-model="hasLeader"
-        @change="
-          leaderWeapon1Select = '';
-          leaderWeapon2Select = '';
-          leaderOptionalSelect = '';
-        "
-      />
-      <label class="form-check-label text-light" for="has-leader-switch"
-        >Has Leader</label
-      >
-    </div>
-    <!-- leaderWeapon1 -->
-    <div
-      v-if="hasLeader && currentSquad.leader.leaderWeapon1.length !== 0"
-      class="form-floating mb-3"
-    >
-      <select
-        class="form-select border-0"
-        id="leader-weapon1-select"
-        v-model="leaderWeapon1Select"
-      >
-        <option value="" hidden>Select Leader Weapon 1</option>
-        <option
-          v-for="weapon in currentSquad.leader.leaderWeapon1"
-          :key="weapon"
-        >
-          {{ weapon }}
-        </option>
-      </select>
-      <label for="leader-weapon1-select">Leader Weapon 1</label>
-    </div>
-    <!-- leaderWeapon2 -->
-    <div
-      v-if="hasLeader && currentSquad.leader.leaderWeapon2.length !== 0"
-      class="form-floating mb-3"
-    >
-      <select
-        class="form-select border-0"
-        id="leader-weapon2-select"
-        v-model="leaderWeapon1Select"
-      >
-        <option value="" hidden>Select Leader Weapon 2</option>
-        <option
-          v-for="weapon in currentSquad.leader.leaderWeapon2"
-          :key="weapon"
-        >
-          {{ weapon }}
-        </option>
-      </select>
-      <label for="leader-weapon2-select">Leader Weapon 1</label>
     </div>
   </div>
 </template>
@@ -145,12 +95,11 @@ export default {
 
     const hasSpecialWeapon = ref(false);
     const hasHeavyWeapon = ref(false);
-    const hasLeader = ref(false);
 
     const specialWeaponSelect = ref("");
     const heavyWeaponSelect = ref("");
-    const leaderWeapon1Select = ref("");
-    const leaderWeapon2Select = ref("");
+
+    const squadOptions = ref(["", ""]);
 
     // reset to empty value when squad change
     // reset hasSpecialWeapon switch
@@ -166,7 +115,11 @@ export default {
       }
     );
 
-    // watch for currentModelNumber
+    const splice = (index, length, value) => {
+      squadOptions.value.splice(index, length, value);
+    };
+
+    // watch for currentModelNumber update and change
     watch(
       () => props.currentModelNumber,
       () => {
@@ -177,6 +130,8 @@ export default {
           dontAllowHeavyWeapon.value = true;
           hasHeavyWeapon.value = false;
           heavyWeaponSelect.value = "";
+          splice(1, 1, "");
+          console.log(squadOptions.value);
         } else if (
           props.currentModelNumber < props.currentSquad.max &&
           heavyWeaponSelect.value !== ""
@@ -184,12 +139,15 @@ export default {
           dontAllowSpecialWeapon.value = true;
           hasSpecialWeapon.value = false;
           specialWeaponSelect.value = "";
+          splice(0, 1, "");
         } else {
           dontAllowSpecialWeapon.value = null;
           dontAllowHeavyWeapon.value = null;
         }
       }
     );
+
+    // check hasSpecialWeapon and hasHeavyWeapon based on currentModelNumber
     const checkSpecialAndHeavy = () => {
       if (
         props.currentModelNumber < props.currentSquad.max &&
@@ -211,17 +169,34 @@ export default {
       }
     };
 
+    const setSpecialAndHeavy = () => {
+      // set or clear specialWeapon
+      if (hasSpecialWeapon.value === true && specialWeaponSelect.value !== "") {
+        splice(0, 1, specialWeaponSelect.value);
+      } else if (hasSpecialWeapon.value === false) {
+        splice(0, 1, "");
+      }
+      // set or clear heavyWeapon
+      if (hasHeavyWeapon.value === true && heavyWeaponSelect.value !== "") {
+        squadOptions.value.splice(1, 1, heavyWeaponSelect.value);
+        splice(1, 1, heavyWeaponSelect.value);
+      } else if (hasHeavyWeapon.value === false) {
+        splice(1, 1, "");
+      }
+      console.log(squadOptions.value);
+    };
+
     return {
       checkSpecialAndHeavy,
+      setSpecialAndHeavy,
+      splice,
       dontAllowSpecialWeapon,
       dontAllowHeavyWeapon,
       hasSpecialWeapon,
       hasHeavyWeapon,
-      hasLeader,
-      leaderWeapon1Select,
-      leaderWeapon2Select,
       specialWeaponSelect,
       heavyWeaponSelect,
+      squadOptions,
     };
   },
 };
