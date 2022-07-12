@@ -1,7 +1,7 @@
 <template>
   <div class="form-group mb-3">
-    <!-- optionalBasicTroopLoadout -->
-    <div class="form-floating mb-3" v-if="currentModelNumber !== 0">
+    <!-- optionalTroopLoadout -->
+    <div class="form-floating mb-3" v-show="currentModelNumber !== 0">
       <select
         class="form-select border-0"
         id="optional-loadout-select"
