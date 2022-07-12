@@ -10,7 +10,7 @@
         id="has-special-weapon-switch"
         v-model="hasSpecialWeapon"
         @change="
-          setSpecialAndHeavy();
+          setSquadOptions();
           dontAllowHeavyWeapon = null;
           specialWeaponSelect = '';
         "
@@ -27,7 +27,7 @@
         v-model="specialWeaponSelect"
         @change="
           checkSpecialAndHeavy();
-          setSpecialAndHeavy();
+          setSquadOptions();
         "
       >
         <option value="" hidden>Select Special Weapon</option>
@@ -47,7 +47,7 @@
         id="has-heavy-weapon-switch"
         v-model="hasHeavyWeapon"
         @change="
-          setSpecialAndHeavy();
+          setSquadOptions();
           dontAllowSpecialWeapon = null;
           heavyWeaponSelect = '';
         "
@@ -64,7 +64,7 @@
         v-model="heavyWeaponSelect"
         @change="
           checkSpecialAndHeavy();
-          setSpecialAndHeavy();
+          setSquadOptions();
         "
       >
         <option value="" hidden>Select Heavy Weapon</option>
@@ -169,7 +169,7 @@ export default {
       }
     };
 
-    const setSpecialAndHeavy = () => {
+    const setSquadOptions = () => {
       // set or clear specialWeapon
       if (hasSpecialWeapon.value === true && specialWeaponSelect.value !== "") {
         splice(0, 1, specialWeaponSelect.value);
@@ -188,7 +188,7 @@ export default {
 
     return {
       checkSpecialAndHeavy,
-      setSpecialAndHeavy,
+      setSquadOptions,
       splice,
       dontAllowSpecialWeapon,
       dontAllowHeavyWeapon,

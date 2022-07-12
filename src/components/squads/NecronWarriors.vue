@@ -1,19 +1,22 @@
 <template>
   <div class="form-group mb-3">
     <!-- optionalBasicTroopLoadout -->
-    <div class="form-floating mb-3">
+    <div class="form-floating mb-3" v-if="currentModelNumber !== 0">
       <select
         class="form-select border-0"
         id="optional-loadout-select"
         v-model="optionalTroopLoadoutSelect"
+        @change="setSquadOptions"
       >
         <option value="" hidden>Select Optional Troop Loadout</option>
-        <option
-          v-for="weapon in currentSquad.optionalTroopLoadout"
+        <template
+          v-for="(weapon, index) in currentSquad.optionalTroopLoadout"
           :key="weapon"
         >
-          {{ weapon }}
-        </option>
+          <option v-if="index <= currentModelNumber - 1">
+            {{ weapon }}
+          </option>
+        </template>
       </select>
       <label for="optional-loadout-select">Optional Troop Loadout</label>
     </div>
@@ -28,8 +31,35 @@ export default {
   props: { currentSquad: Object, currentModelNumber: Number },
   setup(props, { emit }) {
     const optionalTroopLoadoutSelect = ref("");
+
+    const squadOptions = ref([]);
+
+    const splice = (index, length, value) => {
+      squadOptions.value.splice(index, length, value);
+    };
+
+    watch(
+      () => props.currentModelNumber,
+      () => {
+        optionalTroopLoadoutSelect.value = "";
+        splice(0, 1, "");
+        console.log(squadOptions.value);
+      }
+    );
+
+    const setSquadOptions = () => {
+      if (optionalTroopLoadoutSelect.value !== "") {
+        splice(0, 1, optionalTroopLoadoutSelect.value);
+      } else {
+        splice(0, 1, "");
+      }
+      console.log(squadOptions.value);
+    };
+
     return {
+      splice,
       optionalTroopLoadoutSelect,
+      setSquadOptions,
     };
   },
 };

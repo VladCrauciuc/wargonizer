@@ -602,7 +602,7 @@ export const factions = [
         min: 10,
         max: 20,
         basicTroopLoadout: ["Gauss Flayer"],
-        optionalToopLoadout: [
+        optionalTroopLoadout: [
           "1x Gauss Reaper",
           "2x Gauss Reapers",
           "3x Gauss Reapers",
@@ -752,16 +752,14 @@ export const factions = [
         squadValue: "AssaultSquad",
         min: 5,
         max: 10,
-        alternativeSquadBasicLoadout: [],
-        optionalSquadEquipment: ["Jump Packs"],
-        restrictSpecialAndHeavy: false,
-        specialWeapons: [
-          "Plasma Pistol and Chainsword (2 models)",
-          "Flamer (2 models)",
-          "Meltagun (2 models)",
-          "Plasma Gun (2 models)",
+        basicTroopLoadout: ["Bolt Pistols and Chainswords"],
+        optionalTroopLoadout: [
+          "1x Plasma Pistol and Chainsword",
+          "1x Flamer",
+          "1x Plasma Pistol and Chainsword",
+          "2x Flamer",
         ],
-        heavyWeapons: ["Eviscerator (1 every 5 models)"],
+        optionalSquadEquipment: ["Jump Packs"],
         hasLeader: true,
         leader: {
           name: "Assault Marine Sergeant",
@@ -824,7 +822,7 @@ export const factions = [
         squadValue: "TacticalSquad",
         min: 5,
         max: 10,
-        basicTroopLoadout: ["Boltgun"],
+        basicTroopLoadout: ["Boltguns"],
         specialWeapons: [
           "1x Flamer (1 model)",
           "1x Grav-gun (1 model)",

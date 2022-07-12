@@ -15,11 +15,15 @@
       @setModelNumber="setCurrentModelNumber"
     />
     <component
-      v-if="currentSquad"
+      v-if="showSquadComponent && currentSquad"
       :is="currentSquad.squadValue"
       :currentSquad="currentSquad"
       :currentModelNumber="currentModelNumber"
     ></component>
+    <!-- <Leader
+      :currentSquad="currentSquad"
+      v-if="currentSquad && currentSquad.hasLeader"
+    /> -->
   </form>
 </template>
 
@@ -31,6 +35,7 @@ import { factions } from "../../db/_factions.js";
 import Faction from "./Faction.vue";
 import Squad from "./Squad.vue";
 import ModelNumber from "./ModelNumber.vue";
+import Leader from "./Leader.vue";
 
 import squads from "./squads/_index";
 
@@ -39,6 +44,7 @@ export default {
     Faction,
     Squad,
     ModelNumber,
+    Leader,
     ...squads,
   },
   setup() {
@@ -47,6 +53,7 @@ export default {
 
     let showSquadSelect = ref(false);
     let showModelNumberInput = ref(false);
+    let showSquadComponent = ref(false);
 
     let currentFaction = ref(null);
     let currentSquad = ref(null);
@@ -61,6 +68,8 @@ export default {
           }
         });
         showSquadSelect.value = true;
+        showModelNumberInput.value = false;
+        showSquadComponent.value = false;
       } else {
         currentFaction.value = {};
       }
@@ -73,6 +82,7 @@ export default {
         }
       });
       showModelNumberInput.value = true;
+      showSquadComponent.value = true;
       // --- console.log currentSquad.value for test purposes ---
       // console.log(currentSquad.value);
     };
@@ -92,6 +102,7 @@ export default {
       showModelNumberInput,
       setCurrentModelNumber,
       currentModelNumber,
+      showSquadComponent,
     };
   },
 };
