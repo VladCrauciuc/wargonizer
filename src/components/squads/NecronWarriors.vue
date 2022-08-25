@@ -34,6 +34,7 @@ export default {
 
     const squadOptions = ref([]);
 
+    // splice is for adding or removing from squadOptions
     const splice = (index, length, value) => {
       squadOptions.value.splice(index, length, value);
     };
