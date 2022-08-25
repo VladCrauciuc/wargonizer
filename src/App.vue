@@ -4,7 +4,7 @@
       class="d-flex flex-column justify-content-center align-items-center mt-3 mb-3"
     >
       <h1>The Wargonizer</h1>
-      <h4 class="fst-italic">v1.0</h4>
+      <h4 class="fst-italic">main</h4>
     </div>
     <Form />
   </div>
