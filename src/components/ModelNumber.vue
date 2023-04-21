@@ -39,6 +39,13 @@ export default {
   setup(props, { emit }) {
     const modelNumberInput = ref("");
 
+    onMounted(() => {
+      if (props.currentSquad.min === props.currentSquad.max) {
+          modelNumberInput.value = props.currentSquad.min  ;
+          handleModelNumberInput()
+        }
+    })
+
     // reset to empty value when army change
     watch(
       () => props.currentArmy,
@@ -51,7 +58,12 @@ export default {
     watch(
       () => props.currentSquad,
       () => {
-        props.currentSquad.min === props.currentSquad.max ? modelNumberInput.value = props.currentSquad.min : modelNumberInput.value = '';
+        if (props.currentSquad.min === props.currentSquad.max) {
+          modelNumberInput.value = props.currentSquad.min  ;
+          handleModelNumberInput()
+        } else {
+          modelNumberInput.value = ''
+        }
       }
     );
 
