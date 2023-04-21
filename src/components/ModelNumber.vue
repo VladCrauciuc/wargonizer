@@ -32,7 +32,7 @@
 
 <script>
 import { ref } from "@vue/reactivity";
-import { watch } from "@vue/runtime-core";
+import { onMounted, watch } from "@vue/runtime-core";
 
 export default {
   props: { currentSquad: Object, currentArmy: Object },
@@ -51,7 +51,7 @@ export default {
     watch(
       () => props.currentSquad,
       () => {
-        modelNumberInput.value = "";
+        props.currentSquad.min === props.currentSquad.max ? modelNumberInput.value = props.currentSquad.min : modelNumberInput.value = '';
       }
     );
 
