@@ -15,7 +15,7 @@
         "
       />
       <label class="form-check-label text-light" for="has-heavy-weapon-switch"
-        >Heavy Weapon Selection</label
+        >Heavy Weapon [redacted]</label
       >
     </div>
     <!-- heavyWeapon -->
